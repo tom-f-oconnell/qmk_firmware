@@ -3,7 +3,7 @@
 
 - Keyboard: [Mysterium v2](https://github.com/coseyfannitutti/mysterium)
 
-- Computer for compilation / upload / use of the keyboard: Ubuntu 18.04
+- Computer for compilation / upload / testing of the keyboard: Ubuntu 18.04
 
 - USBasp programmer, which Han had updated the firmware of to
   `usbasp.atmega8.2011-05-28.hex`, as per his guide.
@@ -19,7 +19,7 @@ sudo apt install avrdude git libhidapi-hidraw0 libusb-dev
 ```
 
 You must also have `python3.8` and `python3.8-venv` installed. They are available in the
-`deadsnakes` PPA if you need to install them.
+`deadsnakes` PPA if you need to install them. `python3.7` should also work.
 
 
 ### Setting up this fork of QMK
@@ -40,13 +40,14 @@ qmk setup -H ~/src/qmk_firwmare
 
 ### Flashing bootloader on the ATmega32A
 
-Connect the USBasp ISP connector the corresponding connector on the keyboard. Orient the
-connectors such that the ground pins line up. There is no apparent need to connect the
-USB-C cable at this point, though it also didn't seem to hurt.
+Connect the USBasp ISP connector to the corresponding connector on the keyboard. Orient
+the connectors such that the ground pins line up. There is no apparent need to connect
+the USB-C cable at this point, though it also didn't seem to hurt.
 
-I'm not sure if it mattered if I had actually pressed the RESET and BOOT pins in a
-particular order. That might just matter for programming over USB (see the Mysterium
-flashing guide for more info here), if that is possible?
+There does not seem to be any need to press the RESET and BOOT buttons, though they
+might matter for subsequent programming over USB (see the Mysterium flashing guide for
+more info here). Initial programming of blank chips must still be done with a
+programmer.
 
 USBasp jumper congifuration:
 - 2-pin jumper: open
@@ -57,7 +58,7 @@ USBasp jumper congifuration:
 cd ~/src/qmk_firmware/util
 
 # Note that the -B4 flag seemed critical in my case
-sudo avrdude -c usbasp -v -p m32 -P usb -e -U flash:w:bootloader_ps2avrgb_bootloadhid_1.0.1.hex:i -U hfuse:w:0xD0:m -U lfuse:w:0x0F:m -B4
+avrdude -c usbasp -v -p m32 -P usb -e -U flash:w:bootloader_ps2avrgb_bootloadhid_1.0.1.hex:i -U hfuse:w:0xD0:m -U lfuse:w:0x0F:m -B4
 ```
 
 
@@ -72,7 +73,7 @@ cd ~/src/qmk_firmware
 source venv/bin/activate
 
 # A corresponding `qmk compile` command might have been needed before this, but I
-# doubt it. Not sure this required sudo.
+# doubt it.
 qmk flash -kb coseyfannitutti/mysterium -km default
 ```
 
@@ -83,7 +84,6 @@ Disconnect the ISP connector and connect the keyboard to your 18.04 computer via
 
 You should see some lines appear at the end of `dmesg` output that look like:
 ```
-tom@blackbox:~$ dmesg
 [ 7812.525212] usb 1-6: new low-speed USB device number 98 using xhci_hcd
 [ 7812.756487] usb 1-6: New USB device found, idVendor=6b62, idProduct=8769, bcdDevice= 0.01
 [ 7812.756493] usb 1-6: New USB device strings: Mfr=1, Product=2, SerialNumber=0
@@ -97,7 +97,7 @@ tom@blackbox:~$ dmesg
 ```
 
 Use the online QMK keyboard tester [here](https://config.qmk.fm/#/test). With my first
-test of the mysterium, using a single unsoldered keyboard swich to test everything, I
+test of the mysterium, using a single unsoldered keyboard switch to test everything, I
 got this output:
 ![keyboard tester screenshot](docs/tom_mysterium_1st_test.png)
 

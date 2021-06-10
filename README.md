@@ -132,7 +132,7 @@ Bootloader: USBasp
 ```
 
 I forget if I explicitly configured the bootloader at one point, such that it is showing
-up at `USBasp` in the output of the command above.
+up as `USBasp` in the output of the command above.
 
 
 ### More information

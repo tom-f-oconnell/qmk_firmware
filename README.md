@@ -49,7 +49,7 @@ might matter for subsequent programming over USB (see the Mysterium flashing gui
 more info here). Initial programming of blank chips must still be done with a
 programmer.
 
-USBasp jumper congifuration:
+USBasp jumper configuration:
 - 2-pin jumper: open
 - 3-pin 3.3/5v selector: 5v (ATmega32A seems like it might also work with 3.3v)
 

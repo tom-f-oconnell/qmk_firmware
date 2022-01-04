@@ -42,3 +42,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS,KC_TRNS,KC_TRNS,KC_0,   KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,                     KC_TRNS,
       KC_TRNS, KC_TRNS, KC_TRNS,                          KC_TRNS,                KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS)
 };
+
+#define LED_NUMPAD_LAYER C1
+
+void keyboard_pre_init_user(void) {
+  setPinOutput(LED_NUMPAD_LAYER);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+
+  if (IS_LAYER_ON_STATE(state, 2)) {
+      writePinHigh(LED_NUMPAD_LAYER);
+  } else {
+      writePinLow(LED_NUMPAD_LAYER);
+  }
+
+  return state;
+}

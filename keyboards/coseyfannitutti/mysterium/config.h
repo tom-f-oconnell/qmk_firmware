@@ -90,6 +90,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Locking resynchronize hack */
 #define LOCKING_RESYNC_ENABLE
 
+// TODO can i move this to keymap.c in my custom 'tom' keymap?
 #define LED_CAPS_LOCK_PIN C0
 
 /* If defined, GRAVE_ESC will always act as ESC when CTRL is held.

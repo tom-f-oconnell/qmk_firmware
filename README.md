@@ -3,26 +3,15 @@
 
 - Keyboard: [Mysterium v2](https://github.com/coseyfannitutti/mysterium)
 
-- Computer for compilation / upload / testing of the keyboard: Ubuntu 18.04
+- Computer for compilation / upload / testing of the keyboard: Ubuntu 18.04 / 20.04
 
 - USBasp programmer, which Han had updated the firmware of to
   `usbasp.atmega8.2011-05-28.hex`, as per his guide.
 
 
-### Installing dependencies
-
-On a Ubuntu 18.04 computer:
-
-```
-sudo apt update
-sudo apt install avrdude git libhidapi-hidraw0 libusb-dev
-```
-
-You must also have `python3.8` and `python3.8-venv` installed. They are available in the
-`deadsnakes` PPA if you need to install them. `python3.7` should also work.
-
-
 ### Setting up this fork of QMK
+
+Tested initially on Ubuntu 18.04 and most recently on 20.04.
 
 ```
 cd ~/src
@@ -34,11 +23,20 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install qmk
 
-qmk setup -H ~/src/qmk_firwmare
+# This should also setup any Ubuntu dependencies, such as avrdude et al.
+qmk setup -H ~/src/qmk_firwmare -y
+
+# If you do this, you can omit the -kb/-km arguments from QMK commands using them.
+qmk config user.keyboard=coseyfannitutti/mysterium user.keymap=tom
 ```
 
 
-### Flashing bootloader on the ATmega32A
+### Flashing bootloader on the ATmega32A (not working)
+
+Although some of the fuse settings may still have been required to get the chip in a
+state ultimately programmable via the USBasp ISP, I have still not found a way to get
+the bootloader working, such that I can do subsequent firmware updates over USB (with no
+ISP).
 
 Connect the USBasp ISP connector to the corresponding connector on the keyboard. Orient
 the connectors such that the ground pins line up. There is no apparent need to connect
@@ -72,9 +70,7 @@ cd ~/src/qmk_firmware
 # Activate the virtual environment created in a previous step
 source venv/bin/activate
 
-# A corresponding `qmk compile` command might have been needed before this, but I
-# doubt it.
-qmk flash -kb coseyfannitutti/mysterium -km default
+qmk flash
 ```
 
 

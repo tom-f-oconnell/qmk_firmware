@@ -15,7 +15,39 @@
  */
 #include QMK_KEYBOARD_H
 
-// TODO figure out how to send 00 if key to the right of KC_0 in layer 2 is pressed
+#define LED_NUMPAD_LAYER C1
+
+void keyboard_pre_init_user(void) {
+  setPinOutput(LED_NUMPAD_LAYER);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+
+  if (IS_LAYER_ON_STATE(state, 2)) {
+      writePinHigh(LED_NUMPAD_LAYER);
+  } else {
+      writePinLow(LED_NUMPAD_LAYER);
+  }
+
+  return state;
+}
+
+enum custom_keycodes {
+    KC_00 = SAFE_RANGE,
+};
+
+// https://github.com/qmk/qmk_firmware/issues/3594
+// https://docs.qmk.fm/#/feature_macros
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case KC_00:
+        if (record->event.pressed) {
+            SEND_STRING("00");
+        }
+        break;
+    }
+    return true;
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_tkl_ansi(
@@ -39,23 +71,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,KC_TRNS,KC_TRNS,KC_4,   KC_5,   KC_6,    KC_TRNS, KC_TRNS,  KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS, KC_TRNS,
       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,KC_TRNS,KC_TRNS,KC_1,   KC_2,   KC_3,    KC_TRNS, KC_TRNS,  KC_TRNS,
-      KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS,KC_TRNS,KC_TRNS,KC_0,   KC_TRNS,KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,                     KC_TRNS,
+      KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS,KC_TRNS,KC_TRNS,KC_TRNS,KC_0,   KC_00,   KC_TRNS, KC_TRNS,  KC_TRNS,                     KC_TRNS,
       KC_TRNS, KC_TRNS, KC_TRNS,                          KC_TRNS,                KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS)
 };
-
-#define LED_NUMPAD_LAYER C1
-
-void keyboard_pre_init_user(void) {
-  setPinOutput(LED_NUMPAD_LAYER);
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-
-  if (IS_LAYER_ON_STATE(state, 2)) {
-      writePinHigh(LED_NUMPAD_LAYER);
-  } else {
-      writePinLow(LED_NUMPAD_LAYER);
-  }
-
-  return state;
-}

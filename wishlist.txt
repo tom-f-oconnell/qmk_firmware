@@ -1,0 +1,7 @@
+
+- make fn + backspace spam backspace a bunch of times to clear things like password
+  typos
+
+- make fn + ctrl (or alt?) + down arrow minimize (b/c no numpad zero for builtin
+  similar one)?
+

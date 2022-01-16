@@ -49,7 +49,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case BSPC_SPAM:
         if (record->event.pressed) {
-            SEND_STRING("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+            for (int i=0; i<50; i++) {
+                SEND_STRING("\b");
+            }
         }
         break;
     }
